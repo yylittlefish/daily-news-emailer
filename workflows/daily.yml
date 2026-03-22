@@ -1,0 +1,48 @@
+name: Daily News Emailer
+
+on:
+  schedule:
+    # runs at 07:00 UTC daily — 修改 cron 表达式以匹配你需要的时间（注意 GitHub Actions 使用 UTC）
+    - cron: "0 7 * * *"
+  workflow_dispatch:  # allow manual trigger
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: python -m pip install --upgrade pip && pip install requests feedparser python-dotenv
+
+      - name: Create .env from secrets
+        env:
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          TO_EMAILS: ${{ secrets.TO_EMAILS }}
+          SUBJECT_PREFIX: ${{ secrets.SUBJECT_PREFIX }}
+        run: |
+          cat > .env <<EOF
+          NEWSAPI_KEY=${NEWSAPI_KEY:-}
+          SENDGRID_API_KEY=${SENDGRID_API_KEY:-}
+          SMTP_SERVER=${SMTP_SERVER:-smtp.gmail.com}
+          SMTP_PORT=${SMTP_PORT:-587}
+          SMTP_USER=${SMTP_USER:-}
+          SMTP_PASSWORD=${SMTP_PASSWORD:-}
+          FROM_EMAIL=${FROM_EMAIL:-}
+          TO_EMAILS=${TO_EMAILS:-}
+          SUBJECT_PREFIX=${SUBJECT_PREFIX:-[Daily News]}
+          EOF
+
+      - name: Run script
+        run: python send_news_daily.py
