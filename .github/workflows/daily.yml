@@ -3,7 +3,7 @@ name: Daily News Emailer
 on:
   schedule:
     # runs at 07:00 UTC daily — 修改 cron 表达式以匹配你需要的时间（注意 GitHub Actions 使用 UTC）
-    - cron: "0 7 * * *"
+    - cron: "0 6 * * *"
   workflow_dispatch:  # allow manual trigger
 
 jobs:
