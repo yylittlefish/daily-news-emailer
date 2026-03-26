@@ -2,11 +2,12 @@ Daily News Emailer
 
 Fetches and sends the top 5 news items daily (International, AI, Entertainment).
 It supports two execution modes:
-	1. Scheduled via GitHub Actions (recommended if you want automated daily delivery without keeping a machine running).
-	2. Manual / one-off runs by invoking the Python script locally (useful for testing).
+1. Scheduled via GitHub Actions (recommended if you want automated daily delivery without keeping a machine running).
+2. Manual / one-off runs by invoking the Python script locally (useful for testing).
 
 Usage instructions, environment variables, and how to schedule runs with GitHub Actions are described below.
-Local run
+
+For Local run:
 1. Create a virtual environment and install dependencies:
    - python3 -m venv venv
    - source venv/bin/activate
