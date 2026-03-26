@@ -1,27 +1,27 @@
-# Daily News Emailer
+Daily News Emailer
 
-每天抓取并发送 Top5 新闻（International, AI, Entertainment）。
+Fetches and sends the top 5 news items daily (International, AI, Entertainment).
 
-使用说明、环境变量以及如何在 GitHub Actions 中定时执行请见下文。
+Usage instructions, environment variables, and how to schedule runs with GitHub Actions are described below.
 
-## 本地运行
+Local run
+1. Create a virtual environment and install dependencies:
+   - python3 -m venv venv
+   - source venv/bin/activate
+   - pip install requests feedparser python-dotenv
 
-1. 创建虚拟环境并安装依赖：
-python3 -m venv venv
-source venv/bin/activate
-pip install requests feedparser python-dotenv
-2. 准备 `.env`（可参考 `.env.example`）并放在项目根目录。
+2. Prepare a .env file (use .env.example as a reference) and place it in the project root.
 
-3. 运行：
-python send_news_daily.py
+3. Run:
+   - python send_news_daily.py
 
-## 使用 GitHub Actions 定时运行
+Scheduled runs with GitHub Actions
+This repository includes .github/workflows/daily.yml so the job can run automatically every day. You must add the following Secrets in the repository Settings → Secrets and variables → Actions:
 
-仓库包含 `.github/workflows/daily.yml`，可每天自动运行。需要在仓库 Settings -> Secrets and variables -> Actions 中添加以下 Secrets：
-- NEWSAPI_KEY （可选）
-- SENDGRID_API_KEY 或 SMTP_USER、SMTP_PASSWORD、SMTP_SERVER、SMTP_PORT
+- NEWSAPI_KEY (optional)
+- SENDGRID_API_KEY or SMTP_USER, SMTP_PASSWORD, SMTP_SERVER, SMTP_PORT
 - FROM_EMAIL
-- TO_EMAILS （逗号分隔）
-- SUBJECT_PREFIX （可选）
+- TO_EMAILS (comma-separated)
+- SUBJECT_PREFIX (optional)
 
-调整 workflow 的 cron 表达式以符合你希望的触发时间（注意 GitHub Actions 的 cron 使用 UTC）。
+Adjust the workflow cron expression to match your desired trigger time (note: GitHub Actions cron uses UTC).
